@@ -1,62 +1,36 @@
-const express = require("express");
+const express = require('express');
 const app = express();
-const userModel = require("./usermodel");
+const path = require('path');
+const userModel = require("./models/user");
 
-app.get("/", (req, res) => {
-  res.send("Hello World!");
-});
+app.set("view engine", "ejs");
+app.use(express.json());
+app.use(express.urlencoded({extended: true}));
+app.use(express.static(path.join(__dirname, "public")));
 
-// Create a new user
+app.get('/', (req,res) => {
+    res.render("index");
+})
 
-app.get("/create", async (req, res) => {
-  let createdUser = await userModel.create({
-    name: "Siddhi",
-    username: "siddhi123",
-    email: "siddhi@example.com",
-  });
-  res.send(createdUser);
-});
+app.get('/read', async (req,res) => {
+    let users = await userModel.find();
+    res.render("read", {users});
+})
 
-// Read all users
+app.get('/delete/:id', async (req,res) => {
+    let users = await userModel.findOneAndDelete({_id: req.params.id});
+    res.redirect("/read");
+})
 
-app.get("/read", async (req, res) => {
-  let users = await userModel.find();
-  res.send(users);
-});
+app.post('/create', async (req,res) => {
+    let {name,email,image} = req.body;
 
-// Read users with a specific username
-
-app.get("/read", async (req, res) => {
-  let users = await userModel.find({username: "siddhi123"});
-  res.send(users);
-});
-
-// Read a single user with a specific username
-// returns the first match if multiple exist
-
-app.get("/read", async (req, res) => {
-  let users = await userModel.findOne({username: "siddhi123"});
-  res.send(users);
-});
-
-// Update an existing user's email
-
-app.get("/update", async (req, res) => {
-  let updatedUser = await userModel.findOneAndUpdate(
-    {
-      username: "omkar123",
-    },
-    { email: "omkar@test.com" },
-    { new: true }
-  );
-  res.send(updatedUser);
-});
-
-// Delete a user with a specific username
-
-app.get("/delete", async (req, res) => {
-  let deletedUser = await userModel.findOneAndDelete({email: "omkar@example.com"});
-  res.send(deletedUser);
-});
+    let createdUser = await userModel.create({
+        name,
+        email,
+        image
+    });
+    res.redirect("/read");
+})
 
 app.listen(3000);
