@@ -1,0 +1,58 @@
+########################################
+# Node.js
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnp/
+.pnp.js
+
+########################################
+# Environment & Build
+.env
+dist/
+build/
+coverage/
+
+########################################
+# IDE & Editor
+.vscode/
+.idea/
+*.sublime-workspace
+*.sublime-project
+*.iml
+
+########################################
+# OS & System
+.DS_Store
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+########################################
+# Miscellaneous
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+*.orig
+*.rej
+
+########################################
+# Java
+*.class
+*.war
+*.jar
+*.hprof
+
+########################################
+# Database
+*.sql
+*.sqlite
+*.sqlite3
+
+########################################
+# Logs
+*.log
